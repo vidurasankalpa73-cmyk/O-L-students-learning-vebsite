@@ -1,0 +1,1420 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O/L Note - Your Learning Companion</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --secondary: #f8fafc;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --primary-light: #60a5fa;
+            --secondary: #0f172a;
+            --text: #f1f5f9;
+            --text-light: #94a3b8;
+            --white: #1e293b;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--secondary);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: var(--transition);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--white);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.2rem;
+        }
+
+        .theme-toggle:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: rotate(180deg);
+        }
+
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 6rem 2rem 2rem;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: move 20s linear infinite;
+        }
+
+        @keyframes move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .hero-content {
+            text-align: center;
+            color: white;
+            z-index: 1;
+            max-width: 800px;
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: white;
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--text);
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--primary);
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        /* Subjects Section */
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .subject-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .subject-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
+        }
+
+        .subject-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .subject-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .subject-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .subject-card p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+
+        /* Notes Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 20px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            position: relative;
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--primary);
+            transform: rotate(90deg);
+        }
+
+        .lesson {
+            margin-bottom: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .lesson-header {
+            background: var(--secondary);
+            padding: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .lesson-header:hover {
+            background: #e2e8f0;
+        }
+
+        .lesson-content {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .lesson-content.active {
+            padding: 1rem;
+            max-height: 500px;
+        }
+
+        .quiz-container {
+            background: var(--secondary);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+
+        .quiz-question {
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .quiz-option {
+            padding: 0.75rem;
+            background: var(--white);
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary);
+            background: #eff6ff;
+        }
+
+        .quiz-option.correct {
+            background: #dcfce7;
+            border-color: #22c55e;
+            color: #166534;
+        }
+
+        .quiz-option.wrong {
+            background: #fee2e2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text {
+            animation: fadeInLeft 1s ease;
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .about-image {
+            position: relative;
+            animation: fadeInRight 1s ease;
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            border-radius: 20px;
+            opacity: 0.2;
+            z-index: -1;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .feature-list li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-list i {
+            color: var(--primary);
+        }
+
+        /* Contact Section */
+        .contact-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: inherit;
+            transition: var(--transition);
+            background: var(--white);
+            color: var(--text);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text);
+            color: white;
+            padding: 3rem 2rem 1rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: var(--transition);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            color: #64748b;
+            padding-top: 2rem;
+            border-top: 1px solid #334155;
+        }
+
+        /* Scroll Animation */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                right: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background: var(--white);
+                flex-direction: column;
+                padding: 2rem;
+                transition: var(--transition);
+                gap: 1.5rem;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e2e8f0;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Success Message */
+        .success-message {
+            background: #dcfce7;
+            color: #166534;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: none;
+            animation: slideDown 0.5s ease;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loader -->
+    <div class="loader" id="loader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                O/L Note
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#subjects">Subjects</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button></li>
+            </ul>
+            <div class="mobile-menu" id="mobileMenu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Welcome to O/L Note</h1>
+            <p>Your comprehensive learning platform for Ordinary Level success. Access quality notes, interactive quizzes, and study materials designed specifically for Sri Lankan O/L students.</p>
+            <a href="#subjects" class="btn-primary">Start Learning <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </section>
+
+    <!-- Subjects Section -->
+    <section id="subjects">
+        <h2 class="section-title scroll-reveal">Choose Your Subject</h2>
+        <div class="subjects-grid">
+            <div class="subject-card scroll-reveal" data-subject="mathematics">
+                <div class="subject-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <h3>Mathematics</h3>
+                <p>Master algebra, geometry, trigonometry and statistics with comprehensive notes and practice problems.</p>
+                <button class="btn-secondary view-notes-btn">View Notes</button>
+            </div>
+
+            <div class="subject-card scroll-reveal" data-subject="science">
+                <div class="subject-icon">
+                    <i class="fas fa-flask"></i>
+                </div>
+                <h3>Science</h3>
+                <p>Explore biology, chemistry, and physics concepts with detailed explanations and diagrams.</p>
+                <button class="btn-secondary view-notes-btn">View Notes</button>
+            </div>
+
+            <div class="subject-card scroll-reveal" data-subject="english">
+                <div class="subject-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h3>English</h3>
+                <p>Improve your grammar, vocabulary, reading comprehension and writing skills effectively.</p>
+                <button class="btn-secondary view-notes-btn">View Notes</button>
+            </div>
+
+            <div class="subject-card scroll-reveal" data-subject="ict">
+                <div class="subject-icon">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <h3>ICT</h3>
+                <p>Learn information technology basics, programming fundamentals, and digital literacy.</p>
+                <button class="btn-secondary view-notes-btn">View Notes</button>
+            </div>
+
+            <div class="subject-card scroll-reveal" data-subject="history">
+                <div class="subject-icon">
+                    <i class="fas fa-landmark"></i>
+                </div>
+                <h3>History</h3>
+                <p>Study Sri Lankan and world history with timeline-based notes and important events.</p>
+                <button class="btn-secondary view-notes-btn">View Notes</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Notes Modal -->
+    <div class="modal-overlay" id="notesModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 id="modalTitle">Subject Notes</h2>
+            
+            <div id="lessonsContainer">
+                <!-- Lessons will be dynamically inserted here -->
+            </div>
+
+            <div class="quiz-container" id="quizContainer">
+                <h3><i class="fas fa-question-circle"></i> Quick Quiz</h3>
+                <div id="quizContent">
+                    <!-- Quiz will be dynamically inserted here -->
+                </div>
+                <div id="quizResult" style="margin-top: 1rem; font-weight: 600;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" style="background: var(--white);">
+        <h2 class="section-title scroll-reveal">About O/L Note</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <h3>Empowering Sri Lankan O/L Students</h3>
+                <p>O/L Note is dedicated to providing high-quality educational resources for Ordinary Level students in Sri Lanka. Our platform offers comprehensive study materials, interactive learning tools, and practice assessments to help you achieve academic excellence.</p>
+                
+                <ul class="feature-list">
+                    <li><i class="fas fa-check-circle"></i> Comprehensive subject notes aligned with curriculum</li>
+                    <li><i class="fas fa-check-circle"></i> Interactive quizzes for self-assessment</li>
+                    <li><i class="fas fa-check-circle"></i> Accessible anytime, anywhere</li>
+                    <li><i class="fas fa-check-circle"></i> Completely free for all students</li>
+                    <li><i class="fas fa-check-circle"></i> Regular updates with new content</li>
+                </ul>
+            </div>
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600&h=400&fit=crop" alt="Students studying">
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2 class="section-title scroll-reveal">Get In Touch</h2>
+        <div class="contact-container scroll-reveal">
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i> Thank you! Your message has been sent successfully.
+            </div>
+            
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your full name">
+                    <span class="error-message" id="nameError">Please enter your name</span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email">
+                    <span class="error-message" id="emailError">Please enter a valid email address</span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" placeholder="How can we help you?"></textarea>
+                    <span class="error-message" id="messageError">Please enter your message (minimum 10 characters)</span>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    Send Message <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="social-links">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+            
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="#subjects">Subjects</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Use</a>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2026 O/L Note. All rights reserved. | Designed for Sri Lankan O/L Students</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Data for subjects, lessons and quizzes
+        const subjectsData = {
+            mathematics: {
+                title: "Mathematics",
+                lessons: [
+                    {
+                        title: "1. Algebra - Quadratic Equations",
+                        content: "Quadratic equations are polynomial equations of degree 2. Standard form: ax² + bx + c = 0. Solution methods include: Factorization, Completing the square, and Quadratic formula: x = (-b ± √(b²-4ac)) / 2a. Example: Solve x² - 5x + 6 = 0. Solution: (x-2)(x-3) = 0, therefore x = 2 or x = 3."
+                    },
+                    {
+                        title: "2. Geometry - Circle Theorems",
+                        content: "Key circle theorems: 1) Angle at center is twice angle at circumference. 2) Angle in semicircle is 90°. 3) Angles in same segment are equal. 4) Opposite angles of cyclic quadrilateral sum to 180°. 5) Alternate segment theorem. These theorems are essential for solving O/L geometry problems."
+                    },
+                    {
+                        title: "3. Trigonometry - Sine and Cosine Rules",
+                        content: "Sine Rule: a/sinA = b/sinB = c/sinC. Used when given: two angles and one side, or two sides and non-included angle. Cosine Rule: a² = b² + c² - 2bc cosA. Used when given: three sides, or two sides and included angle. Area of triangle = ½ab sinC."
+                    }
+                ],
+                quiz: [
+                    {
+                        question: "What is the solution to x² - 7x + 12 = 0?",
+                        options: ["x = 3 or 4", "x = -3 or -4", "x = 2 or 6", "x = 1 or 12"],
+                        correct: 0
+                    },
+                    {
+                        question: "If sin θ = 0.5, what is θ?",
+                        options: ["30°", "45°", "60°", "90°"],
+                        correct: 0
+                    },
+                    {
+                        question: "What is the sum of interior angles of a pentagon?",
+                        options: ["360°", "540°", "720°", "900°"],
+                        correct: 1
+                    }
+                ]
+            },
+            science: {
+                title: "Science",
+                lessons: [
+                    {
+                        title: "1. Biology - Cell Structure",
+                        content: "The cell is the basic unit of life. Animal cells contain: nucleus (controls activities), cytoplasm (chemical reactions), cell membrane (controls entry/exit), mitochondria (respiration). Plant cells additionally have: cell wall (support), chloroplasts (photosynthesis), vacuole (storage). Cell theory states all living things are made of cells."
+                    },
+                    {
+                        title: "2. Chemistry - Periodic Table",
+                        content: "The periodic table organizes elements by atomic number. Groups (columns) contain elements with similar properties. Periods (rows) show increasing atomic number. Group 1: Alkali metals (reactive). Group 17: Halogens. Group 18: Noble gases (unreactive). Metals are on the left, non-metals on the right."
+                    },
+                    {
+                        title: "3. Physics - Forces and Motion",
+                        content: "Newton's Laws: 1) Object remains at rest or uniform motion unless acted upon by force. 2) F = ma (Force = mass × acceleration). 3) Every action has equal and opposite reaction. Speed = distance/time. Velocity = displacement/time. Acceleration = change in velocity/time."
+                    }
+                ],
+                quiz: [
+                    {
+                        question: "Which organelle is responsible for photosynthesis?",
+                        options: ["Nucleus", "Mitochondria", "Chloroplast", "Vacuole"],
+                        correct: 2
+                    },
+                    {
+                        question: "What is the chemical symbol for Gold?",
+                        options: ["Go", "Gd", "Au", "Ag"],
+                        correct: 2
+                    },
+                    {
+                        question: "According to Newton's Second Law, if mass doubles and acceleration stays constant, what happens to force?",
+                        options: ["Halves", "Doubles", "Stays same", "Quadruples"],
+                        correct: 1
+                    }
+                ]
+            },
+            english: {
+                title: "English",
+                lessons: [
+                    {
+                        title: "1. Grammar - Tenses",
+                        content: "Present Simple: Habits (I play). Present Continuous: Now (I am playing). Past Simple: Completed (I played). Past Continuous: Interrupted (I was playing). Present Perfect: Experience (I have played). Future: Will (prediction), Going to (plan). Passive voice: Object becomes subject (The cake was eaten by him)."
+                    },
+                    {
+                        title: "2. Vocabulary - Word Formation",
+                        content: "Prefixes change meaning: un- (not), re- (again), dis- (opposite), mis- (wrong). Suffixes change word class: -tion (verb→noun), -ful (noun→adjective), -ly (adjective→adverb), -ness (adjective→noun). Examples: happy→happiness, educate→education, beauty→beautiful→beautifully."
+                    },
+                    {
+                        title: "3. Comprehension - Reading Strategies",
+                        content: "Skimming: Quick read for main idea. Scanning: Look for specific information. Intensive reading: Detailed understanding. Context clues: Use surrounding words to understand meaning. Topic sentence: Usually first sentence of paragraph. Supporting details: Evidence for main idea."
+                    }
+                ],
+                quiz: [
+                    {
+                        question: "Which tense is used for habitual actions?",
+                        options: ["Present Continuous", "Present Simple", "Past Simple", "Future"],
+                        correct: 1
+                    },
+                    {
+                        question: "What does the prefix 'un-' mean?",
+                        options: ["Again", "Not", "Before", "After"],
+                        correct: 1
+                    },
+                    {
+                        question: "In the sentence 'The book was written by her', what voice is used?",
+                        options: ["Active", "Passive", "Neutral", "Direct"],
+                        correct: 1
+                    }
+                ]
+            },
+            ict: {
+                title: "ICT",
+                lessons: [
+                    {
+                        title: "1. Computer Systems - Hardware",
+                        content: "Input devices: Keyboard, mouse, scanner, microphone. Output devices: Monitor, printer, speakers. Processing: CPU (Central Processing Unit) - brain of computer. Memory: RAM (temporary), ROM (permanent), Hard disk (storage). System unit contains motherboard, CPU, memory, and storage devices."
+                    },
+                    {
+                        title: "2. Software - Operating Systems",
+                        content: "System software: Operating systems (Windows, macOS, Linux), utility programs. Application software: Word processors (MS Word), Spreadsheets (Excel), Presentation (PowerPoint), Browsers. Functions of OS: Memory management, file management, process management, security."
+                    },
+                    {
+                        title: "3. Internet and Email",
+                        content: "Internet: Global network of networks. WWW: World Wide Web (information system). URL: Uniform Resource Locator (web address). Email protocol: SMTP (sending), POP3/IMAP (receiving). Netiquette: Internet etiquette rules. Security: Use strong passwords, antivirus software, avoid suspicious links."
+                    }
+                ],
+                quiz: [
+                    {
+                        question: "What does CPU stand for?",
+                        options: ["Central Processing Unit", "Computer Personal Unit", "Central Program Utility", "Computer Processing Unit"],
+                        correct: 0
+                    },
+                    {
+                        question: "Which is an example of application software?",
+                        options: ["Windows 10", "Linux", "Microsoft Word", "BIOS"],
+                        correct: 2
+                    },
+                    {
+                        question: "What protocol is used for sending emails?",
+                        options: ["HTTP", "FTP", "SMTP", "TCP"],
+                        correct: 2
+                    }
+                ]
+            },
+            history: {
+                title: "History",
+                lessons: [
+                    {
+                        title: "1. Sri Lankan History - Ancient Kingdoms",
+                        content: "Anuradhapura Kingdom (377 BC - 1017 AD): First capital, introduced Buddhism by Arhant Mahinda. Polonnaruwa Kingdom (1055-1232): Second capital, Parakramabahu I built irrigation systems. Sigiriya: Built by Kashyapa I (477-495 AD). Important rulers: Devanampiyatissa, Dutugemunu, Valagamba, Mahasen."
+                    },
+                    {
+                        title: "2. World History - Industrial Revolution",
+                        content: "Began in Britain (1760-1840). Inventions: Steam engine (James Watt), Spinning jenny, Power loom. Impact: Factory system, urbanization, railway expansion. Social changes: Working class conditions, child labor issues, formation of trade unions. Spread to Europe and America."
+                    },
+                    {
+                        title: "3. World War II (1939-1945)",
+                        content: "Causes: Treaty of Versailles, Rise of Fascism/Nazism, Appeasement policy. Axis powers: Germany, Italy, Japan. Allied powers: Britain, France, USSR, USA (joined 1941). Key events: Pearl Harbor (1941), D-Day (1944), Atomic bombs on Hiroshima and Nagasaki (1945). United Nations formed (1945)."
+                    }
+                ],
+                quiz: [
+                    {
+                        question: "Who introduced Buddhism to Sri Lanka?",
+                        options: ["Dutugemunu", "Arhant Mahinda", "Parakramabahu", "Devanampiyatissa"],
+                        correct: 1
+                    },
+                    {
+                        question: "Where did the Industrial Revolution begin?",
+                        options: ["USA", "France", "Britain", "Germany"],
+                        correct: 2
+                    },
+                    {
+                        question: "In which year did World War II end?",
+                        options: ["1943", "1944", "1945", "1946"],
+                        correct: 2
+                    }
+                ]
+            }
+        };
+
+        // DOM Elements
+        const loader = document.getElementById('loader');
+        const themeToggle = document.getElementById('themeToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const navLinks = document.getElementById('navLinks');
+        const navbar = document.getElementById('navbar');
+        const notesModal = document.getElementById('notesModal');
+        const closeModal = document.getElementById('closeModal');
+        const contactForm = document.getElementById('contactForm');
+        const scrollElements = document.querySelectorAll('.scroll-reveal');
+
+        // Remove loader when page loads
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                loader.classList.add('hidden');
+            }, 500);
+        });
+
+        // Theme Toggle
+        let isDarkMode = false;
+        themeToggle.addEventListener('click', () => {
+            isDarkMode = !isDarkMode;
+            document.body.setAttribute('data-theme', isDarkMode ? 'dark' : '');
+            themeToggle.innerHTML = isDarkMode ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            
+            // Save preference
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+        });
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            isDarkMode = true;
+            document.body.setAttribute('data-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
+        // Mobile Menu Toggle
+        mobileMenu.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenu.innerHTML = navLinks.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+
+        // Close mobile menu when clicking links
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenu.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+            } else {
+                navbar.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+            }
+        });
+
+        // Scroll Reveal Animation
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        scrollElements.forEach(el => revealObserver.observe(el));
+
+        // Subject Cards - View Notes
+        document.querySelectorAll('.view-notes-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const card = btn.closest('.subject-card');
+                const subject = card.dataset.subject;
+                openNotesModal(subject);
+            });
+        });
+
+        // Also make entire card clickable
+        document.querySelectorAll('.subject-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (!e.target.classList.contains('btn-secondary')) {
+                    const subject = card.dataset.subject;
+                    openNotesModal(subject);
+                }
+            });
+        });
+
+        function openNotesModal(subject) {
+            const data = subjectsData[subject];
+            document.getElementById('modalTitle').textContent = data.title + ' Notes';
+            
+            // Generate lessons
+            const lessonsContainer = document.getElementById('lessonsContainer');
+            lessonsContainer.innerHTML = '';
+            
+            data.lessons.forEach((lesson, index) => {
+                const lessonDiv = document.createElement('div');
+                lessonDiv.className = 'lesson';
+                lessonDiv.innerHTML = `
+                    <div class="lesson-header" onclick="toggleLesson(${index})">
+                        <span>${lesson.title}</span>
+                        <i class="fas fa-chevron-down" id="icon-${index}"></i>
+                    </div>
+                    <div class="lesson-content" id="content-${index}">
+                        <p>${lesson.content}</p>
+                    </div>
+                `;
+                lessonsContainer.appendChild(lessonDiv);
+            });
+
+            // Generate quiz
+            generateQuiz(data.quiz);
+            
+            notesModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function toggleLesson(index) {
+            const content = document.getElementById(`content-${index}`);
+            const icon = document.getElementById(`icon-${index}`);
+            
+            content.classList.toggle('active');
+            icon.style.transform = content.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
+        function generateQuiz(quizData) {
+            const quizContent = document.getElementById('quizContent');
+            const quizResult = document.getElementById('quizResult');
+            quizContent.innerHTML = '';
+            quizResult.innerHTML = '';
+            
+            let score = 0;
+            let answered = 0;
+
+            quizData.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'quiz-question';
+                questionDiv.innerHTML = `<p><strong>Q${index + 1}:</strong> ${q.question}</p>`;
+                
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'quiz-options';
+                
+                q.options.forEach((opt, optIndex) => {
+                    const optionBtn = document.createElement('div');
+                    optionBtn.className = 'quiz-option';
+                    optionBtn.textContent = opt;
+                    optionBtn.addEventListener('click', () => {
+                        if (optionBtn.classList.contains('correct') || optionBtn.classList.contains('wrong')) return;
+                        
+                        answered++;
+                        if (optIndex === q.correct) {
+                            optionBtn.classList.add('correct');
+                            score++;
+                        } else {
+                            optionBtn.classList.add('wrong');
+                            // Show correct answer
+                            optionsDiv.children[q.correct].classList.add('correct');
+                        }
+                        
+                        // Disable all options for this question
+                        Array.from(optionsDiv.children).forEach(child => {
+                            child.style.pointerEvents = 'none';
+                        });
+
+                        if (answered === quizData.length) {
+                            quizResult.innerHTML = `
+                                <i class="fas fa-trophy"></i> 
+                                You scored ${score}/${quizData.length}! 
+                                ${score === quizData.length ? 'Perfect! 🎉' : 'Good effort! Keep studying!'}
+                            `;
+                            quizResult.style.color = score === quizData.length ? '#22c55e' : '#f59e0b';
+                        }
+                    });
+                    optionsDiv.appendChild(optionBtn);
+                });
+                
+                questionDiv.appendChild(optionsDiv);
+                quizContent.appendChild(questionDiv);
+            });
+        }
+
+        // Close Modal
+        closeModal.addEventListener('click', () => {
+            notesModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        notesModal.addEventListener('click', (e) => {
+            if (e.target === notesModal) {
+                notesModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Contact Form Validation
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name');
+            const email = document.getElementById('email');
+            const message = document.getElementById('message');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            let isValid = true;
+
+            // Name validation
+            if (name.value.trim() === '') {
+                document.getElementById('nameError').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('nameError').classList.remove('show');
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.value)) {
+                document.getElementById('emailError').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('emailError').classList.remove('show');
+            }
+
+            // Message validation
+            if (message.value.trim().length < 10) {
+                document.getElementById('messageError').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('messageError').classList.remove('show');
+            }
+
+            if (isValid) {
+                // Simulate form submission
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                
+                setTimeout(() => {
+                    document.getElementById('successMessage').classList.add('show');
+                    contactForm.reset();
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Send Message <i class="fas fa-paper-plane"></i>';
+                    
+                    setTimeout(() => {
+                        document.getElementById('successMessage').classList.remove('show');
+                    }, 5000);
+                }, 1500);
+            }
+        });
+
+        // Real-time validation removal
+        ['name', 'email', 'message'].forEach(fieldId => {
+            document.getElementById(fieldId).addEventListener('input', () => {
+                document.getElementById(fieldId + 'Error').classList.remove('show');
+            });
+        });
+
+        // Keyboard accessibility for modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && notesModal.classList.contains('active')) {
+                notesModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+</body>
+</html>
